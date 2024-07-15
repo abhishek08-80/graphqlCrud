@@ -1,0 +1,35 @@
+{
+  "name": "graphqlcrud",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/cls-hooked": "^4.3.8",
+    "@types/joi": "^17.2.3",
+    "@types/mongoose": "^5.11.97",
+    "typescript": "^5.5.3"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.10.4",
+    "@types/bcrypt": "^5.0.2",
+    "@types/shortid": "^0.0.32",
+    "apollo-server": "^3.13.0",
+    "bcrypt": "^5.1.1",
+    "cls-hooked": "^4.2.2",
+    "dotenv": "^16.4.5",
+    "graphql-tag": "^2.12.6",
+    "joi": "^17.13.3",
+    "mongoose": "^8.5.1",
+    "nodemon": "^3.1.4",
+    "shortid": "^2.2.16",
+    "winston": "^3.13.1",
+    "winston-daily-rotate-file": "^5.0.0"
+  }
+}
