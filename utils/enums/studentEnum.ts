@@ -1,4 +1,4 @@
-// enum for status codes 
+// status codes 
 export enum STATUS_CODES {
   UNKNOWN_CODE = 0,
   SUCCESS = 200,
@@ -11,7 +11,7 @@ export enum STATUS_CODES {
   GATEWAY_TIMEOUT = 504,
 }
 
-// enum for error messages
+// error messages
 export enum ErrorMessageEnum {
   INVALID_REQUEST = "Invalid Request Created",
   VALIDATION_ERROR = "Validation Error",
@@ -22,6 +22,25 @@ export enum ErrorMessageEnum {
   INVALID_CREDENTIALS = " Invalid credentials",
   EMAIL_ALREADY_EXIST = "Email Already Exist",
   ID_ALREADY_EXIST = "ID Already Exist",
-  DATABASE_ERROR = "VBUNIM",
   INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR",
 }
+
+// success messages
+export const SuccessMessages = {
+  LOGIN: 'Login successfully.',
+
+  fetchedAllUser: 'Users fetched successfully.',
+
+  create: (value: string) => {
+    return `${value} created successfully.`;
+  },
+  fetch: (value: string) => {
+    return `${value} fetched successfully.`;
+  },
+  update: (value: string) => {
+    return `${value} updated successfully.`;
+  },
+  delete: (value: string) => {
+    return `${value} deleted successfully.`;
+  },
+};

@@ -10,20 +10,30 @@ const resolvers = {
     students: async () => {
       const result = await studentService.getAllStudents();
       if (result instanceof Array) {
-        return result;
+        return {
+          status: result.status,
+          message: result.message,
+          student: result.students,
+        };
       } else {
         return {
           student: "Zero Record Found",
           status: result.status,
+          message: result.message,
         };
       }
     },
     student: async (parent: any, args: { _id: string }) => {
       const student = await studentService.getStudentById(args._id);
+      return {
+        student: student.student,
+        status: student.status,
+        message: student.message,
+      };
     },
   },
   /**
-   * mutation for creating, updating, deleting a single user
+   * mutation for creating, updating, deleting a user
    */
   Mutation: {
     /**
@@ -50,6 +60,7 @@ const resolvers = {
         return {
           student: createStudent.student,
           status: createStudent.status,
+          message: createStudent.message,
         };
       }
     },
@@ -60,7 +71,7 @@ const resolvers = {
       const updateStudent = await studentService.updateStudent(args);
       if (
         updateStudent.status == STATUS_CODES.BAD_REQUEST &&
-        ErrorMessageEnum.INVALID_USER_ID
+        updateStudent.error?.message === ErrorMessageEnum.INVALID_USER_ID
       ) {
         throw new ApolloError(ErrorMessageEnum.INVALID_USER_ID);
       }
@@ -71,6 +82,7 @@ const resolvers = {
         return {
           student: updateStudent.student,
           status: updateStudent.status,
+          message: updateStudent.message,
         };
       }
     },
@@ -92,6 +104,7 @@ const resolvers = {
         return {
           student: deleteStudent.student,
           status: deleteStudent.status,
+          message: deleteStudent.message,
         };
       }
     },

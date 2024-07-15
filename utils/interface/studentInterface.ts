@@ -1,5 +1,5 @@
 import { ErrorMessageEnum, STATUS_CODES } from "../enums/studentEnum";
-
+import {SuccessMessages} from '../enums/studentEnum'
 export interface createStudent {
   email: string;
   firstName: string;
@@ -30,6 +30,7 @@ export interface IStudent {
 export interface IResponse {
   status: STATUS_CODES;
   error?: IError;
+  message?: string;
 }
 export interface IError {
   message?: string;
@@ -38,15 +39,15 @@ export interface IError {
 
 export interface ICreateStudentResponse extends IResponse {
   student?: IStudent;
-  status: STATUS_CODES;
 }
 
 export interface IUpdateStudentResponse extends IResponse {
   student?: IStudent;
-  status: STATUS_CODES;
 }
 
-export interface IdeleteUserResponse extends IResponse {
+export interface IDeleteStudentResponse extends IResponse {
   student?: any;
-  status: STATUS_CODES;
+}
+export interface IGetAllStudentResponse extends IResponse {
+  students?: any;
 }

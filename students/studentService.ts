@@ -2,7 +2,11 @@ import { ValidationError } from "apollo-server";
 import StudentStore from "./studentStore";
 import { studentCreateSchema, studentUpdateSchema } from "./studentSchema";
 import { ErrorMessages } from "../utils/messages/studentResponse";
-import { ErrorMessageEnum, STATUS_CODES } from "../utils/enums/studentEnum";
+import {
+  ErrorMessageEnum,
+  STATUS_CODES,
+  SuccessMessages,
+} from "../utils/enums/studentEnum";
 import { toError } from "../utils/common/common";
 import * as bcrypt from "bcrypt";
 import * as dotenv from "dotenv";
@@ -11,9 +15,10 @@ import {
   ICreateStudentResponse,
   IStudent,
   IUpdateStudentResponse,
-  IdeleteUserResponse,
+  IDeleteStudentResponse,
   createStudent,
   updateStudentRequest,
+  IGetAllStudentResponse,
 } from "../utils/interface/studentInterface";
 import logger from "../utils/logger/logger";
 
@@ -23,14 +28,13 @@ class StudentService {
    * Returns array of students
    */
   async getAllStudents() {
-    const response = {
+    const response: IGetAllStudentResponse = {
       status: STATUS_CODES.UNKNOWN_CODE,
     };
     try {
-      const response = {
-        status: STATUS_CODES.SUCCESS,
-        data: await StudentStore.findStudents(),
-      };
+      response.status = STATUS_CODES.SUCCESS,
+      response.students = await StudentStore.findStudents(),
+      response.message = SuccessMessages.fetchedAllUser;
       return response;
     } catch (e: any) {
       response.status = STATUS_CODES.INTERNAL_SERVER_ERROR;
@@ -52,7 +56,10 @@ class StudentService {
         response.error = toError(ErrorMessageEnum.INVALID_USER_ID);
         return response;
       }
-      return student;
+      response.status = STATUS_CODES.SUCCESS;
+      response.student = student;
+      response.message = SuccessMessages.create(student.firstName);
+      return response;
     } catch (e: any) {
       (response.status = STATUS_CODES.INTERNAL_SERVER_ERROR),
         (response.error = toError(e.message));
@@ -93,11 +100,10 @@ class StudentService {
 
       response.status = STATUS_CODES.SUCCESS;
       response.student = saveUser;
+      response.message = SuccessMessages.create(studentData.firstName);
       return response;
     } catch (e: any) {
-      logger.error(
-        ErrorMessages.errorLog('createStudent', e)
-      );
+      logger.error(ErrorMessages.errorLog("createStudent", e));
       (response.status = STATUS_CODES.INTERNAL_SERVER_ERROR),
         (response.error = toError(e.message));
       return response;
@@ -128,10 +134,12 @@ class StudentService {
       if (!existingStudent) {
         response.status = STATUS_CODES.BAD_REQUEST;
         response.error = toError(ErrorMessageEnum.INVALID_USER_ID);
+        // response.message = ErrorMessageEnum.INVALID_USER_ID;
         return response;
       }
       response.status = STATUS_CODES.SUCCESS;
       response.student = existingStudent;
+      response.message = SuccessMessages.update(existingStudent.firstName);
       return response;
     } catch (e: any) {
       (response.status = STATUS_CODES.INTERNAL_SERVER_ERROR),
@@ -143,8 +151,8 @@ class StudentService {
    * Service function for deleting student
    * Returns deleted student
    */
-  async deleteStudent(id: string): Promise<IdeleteUserResponse> {
-    const response: IdeleteUserResponse = {
+  async deleteStudent(id: string): Promise<IDeleteStudentResponse> {
+    const response: IDeleteStudentResponse = {
       status: STATUS_CODES.UNKNOWN_CODE,
     };
     try {
@@ -157,6 +165,7 @@ class StudentService {
       await StudentStore.deleteStudent(id);
       response.status = STATUS_CODES.SUCCESS;
       response.student = findStudent;
+      response.message = SuccessMessages.delete(findStudent.firstName);
       return response;
     } catch (e: any) {
       (response.status = STATUS_CODES.INTERNAL_SERVER_ERROR),

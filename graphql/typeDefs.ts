@@ -17,6 +17,7 @@ const typeDefs = gql`
    type StudentResponse {
     student: Student
     status: Int
+    message: String
   }
 
   input UserInput {

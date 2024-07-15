@@ -8,7 +8,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 const MONGO_URI = process.env.MONGO_URI || "";
-const PORT = parseInt(process.env.PORT || "4040");
+const PORT = parseInt(process.env.PORT || "4000");
 
 // Database connection
 mongoose
